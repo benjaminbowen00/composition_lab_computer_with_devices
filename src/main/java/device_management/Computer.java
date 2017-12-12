@@ -3,18 +3,20 @@ package device_management;
 import behaviours.IInput;
 import behaviours.IOutput;
 
+import java.util.ArrayList;
+
 public class Computer {
     private int ram;
     private int hddSize;
 
     private IOutput outputDevice;
-    private IInput inputDevice;
+    private ArrayList<IInput> inputDevices;
 
-    public Computer(int ram, int hddSize, IOutput outputDevice, IInput inputDevice) {
+    public Computer(int ram, int hddSize, IOutput outputDevice, ArrayList<IInput> inputDevices) {
         this.ram = ram;
         this.hddSize = hddSize;
         this.outputDevice = outputDevice;
-        this.inputDevice = inputDevice;
+        this.inputDevices = inputDevices;
     }
 
     public int getRam() {
@@ -37,15 +39,29 @@ public class Computer {
         this.outputDevice = outputDevice;
     }
 
-    public IInput getInputDevice() {
-        return inputDevice;
+//    public IInput getFirstInputDevice() {
+//        return inputDevices.get(0);
+//    }
+
+    public String getinputDataKeyboard(String data) {
+        for(IInput device : inputDevices){
+            if(device instanceof Keyboard){
+                return device.sendData(data);
+            }
+        }
+        return null;
     }
 
-    public String getinputData(String data) {
-        return this.inputDevice.sendData(data);
+    public String getinputData(String data, Class inputDevice) {
+        for(IInput device : inputDevices){
+            if(device.getClass() == inputDevice){
+                return device.sendData(data);
+            }
+        }
+        return null;
     }
 
-    public void setInputDevice(IInput inputDevice) {
-        this.inputDevice = inputDevice;
+    public void setInputDevices(ArrayList<IInput> inputDevices) {
+        this.inputDevices = inputDevices;
     }
 }
